@@ -17,37 +17,132 @@ public class Generator {
     final static int setHole = 7;
     final static int setMarbleEachHole = 7;
     final static boolean captureMode = true;
+    static int[] house = new int[(7*2)+2];
+    final static int p1Store = 7;
+    final static int p2Store = 15;
     
     public static void main(String[] args) {
         
-        int[] house = new int[(7*2)+2];
         // P1 STOREHOUSE = house[7]
         // P2 STOREHOUSE = house[15]
         
-        newGame(house);
-        display(house);
+        newGame();
+        display();
         
-        // P1 starts first
-//        while(!gameOver(house)){
-//            
-//        }
+        while(!gameOver()){
+//        P1 starts first
+            System.out.println("Player 1");
+            while(p1GetFreeTurn() != -1) {
+                p1Deposit(p1GetFreeTurn());
+            }
+            if(p1GetFreeTurn() == -1) p1Deposit(p1ChooseNext());
+            System.out.println();
+            
+//        P2 starts next
+            System.out.println("Player 2");
+            while(p2GetFreeTurn() != -1) {
+                p2Deposit(p2GetFreeTurn());
+            }
+            if(p2GetFreeTurn() == -1) p2Deposit(p2ChooseNext());
+            System.out.println();
+
+        }
         
     }
     
-    public static void newGame(int[] house){
+    public static void newGame(){
         // Assigning marbles for each houses except the storehouses
         for(int i = 0; i < house.length; i++) if(i != 7 && i != 15) house[i] = 7;
     }
     
     public static int p1GetFreeTurn(){
-        return -1;
+        for(int i = 0; i <= 6; i++) if(house[i] == (7 - i)) return i;
+        return -1; // return -1 if no possible way to get free turn
+    }
+    
+    public static int p1ChooseNext(){
+        for(int i = 0; i <= 6; i++) if(house[i] != 0) return i;
+        return -1; // return -1 if game whole rows is empty
     }
     
     public static int p2GetFreeTurn(){
-        return -1;
+        for(int i = 8; i <= 14; i++) if(house[i] == (15 - i)) return i;
+        return -1; // return -1 if no possible way to get free turn
     }
     
-    public static boolean checkLastMarbleOnStore(){
+    public static int p2ChooseNext(){
+        for(int i = 8; i <= 14; i++) if(house[i] != 0) return i;
+        return -1; // return -1 if game whole rows is empty
+    }
+    
+    /**
+     * @param n
+     * @return true if last deposit marble in on p1store
+     */
+    public static boolean p1Deposit(int n){
+        int holds = house[n];
+        house[n] = 0;
+            
+        while(holds > 0){
+            n++;
+            if(n == p2Store) n = 0;
+            house[n]++;
+            holds--;
+            
+            // When depositing the last marble
+            if(holds == 0){
+                if(n == p1Store) break;
+                else {
+                    if(house[n] > 1) {
+                        display();
+                        holds = house[n];
+                        house[n] = 0;
+                    }
+                }
+            }
+        }
+        display();
+        
+        if(n == p1Store){
+            System.out.println("Player 1 gets free turn");
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * @param n
+     * @return true if last deposit marble in on p2store
+     */
+    public static boolean p2Deposit(int n){
+        int holds = house[n];
+        house[n] = 0;
+            
+        while(holds > 0){
+            n++;
+            if(n == p1Store) n++;
+            if(n == 16) n = 0;
+            house[n]++;
+            holds--;
+            
+            // When depositing the last marble
+            if(holds == 0){
+                if(n == p2Store) break;
+                else {
+                    if(house[n] > 1) {
+                        display();
+                        holds = house[n];
+                        house[n] = 0;
+                    }
+                }
+            }
+        }
+        display();
+        
+        if(n == p2Store){
+            System.out.println("Player 2 gets free turn");
+            return true;
+        }
         return false;
     }
     
@@ -55,18 +150,20 @@ public class Generator {
         return false;
     }
     
-    public static boolean gameOver(int[] house){
+    
+    
+    public static boolean gameOver(){
         int total = 0;
         for(int i = 0; i < house.length; i++) if(i != 7 && i != 15) total += house[i];
         return total == 0;
     }
     
-    public static void display(int[] house){
+    public static void display(){
         System.out.print("    ");
         for(int i = 8; i < 15; i++) System.out.printf("[%2d]", house[i]);
         System.out.printf("\n[%2d]\t\t\t\t[%2d]\n", house[7], house[15]);
         System.out.print("    ");
         for(int i = 6; i >= 0; i--) System.out.printf("[%2d]", house[i]);
-        System.out.println();
+        System.out.println("\n");
     }
 }
