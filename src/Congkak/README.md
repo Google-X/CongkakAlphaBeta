@@ -1,25 +1,11 @@
 OVERVIEW OF A CONGKAK
 
-    [7][7][7][7][7][7][7]
-[p1]                     [p2]
-    [7][7][7][7][7][7][7]
-
-p1: player 1 storehouse
-p2: player 2 storehouse
-
-INDEX
-    [ 8][ 9][10][11][12][13][14]
-[ 7]                            [15]
-    [ 6][ 5][ 4][ 3][ 2][ 1][ 0]
-
-Moving in clockwise direction:
-P1 can choose any holes from 0 to 6 [p1's houses]
-P2 can choose any holes from 8 to 14 [p2's houses]
+Each house has 7 marbles, the left storehouse from you is yours while the right storehouse from you is your opponent's storehouse
 
 ROUND 1
 1. Both players pick marbles up from one of their own houses
 2. Going clockwise, depositing one marble per house until the marbles run out
-3. Deposit a marble when they reach their on respective storehome
+3. Deposit a marble when they reach their on respective storehouse
 4. If they finished at any houses with marbles, they can pick them up and continue playing
 5. When last marble they deposit is at one of the opponent's houses that is empty
 6. Round 1 of the game is done when all houses are emptied
@@ -28,7 +14,7 @@ ROUND 1
 GETTING AN ADDITIONAL TURN
 1. Last marble they deposit is on their own storehouse
 [CAPTURE MODE: ON]
-2. If the last marble you deposit is at your own empty house, you get to capture the marbles in the opposite house [opponent's house's marbles] if there is any. All the captured marble and your last marbles are put into your own storehouse. Your opponent loses a turn.\
+2. If the last marble you deposit is at your own empty house, you get to capture the marbles in the opposite house [opponent's house's marbles] if there is any. All the captured marble and your last marbles are put into your own storehouse. Your opponent loses a turn.
 3. While capturing, if your opponent's house does not have any marbles, your last deposited marble is also placed into your own storehouse and you get an additional turn as well
 
 ROUND 2
