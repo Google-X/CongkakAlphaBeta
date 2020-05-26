@@ -17,15 +17,11 @@ public class Generator {
     final static int setHole = 7;
     final static int setMarbleEachHole = 7;
     final static boolean captureMode = true;
-    static int[] house = new int[(7*2)+2];
-    final static int p1Store = 7;
-    final static int p2Store = 15;
+    static int[] house = new int[(setHole*2)+2];
+    final static int p1Store = house.length/2 - 1;
+    final static int p2Store = house.length-1;
     
     public static void main(String[] args) {
-        
-        // P1 STOREHOUSE = house[7]
-        // P2 STOREHOUSE = house[15]
-        
         newGame();
         display();
         
@@ -52,26 +48,26 @@ public class Generator {
     
     public static void newGame(){
         // Assigning marbles for each houses except the storehouses
-        for(int i = 0; i < house.length; i++) if(i != 7 && i != 15) house[i] = 7;
+        for(int i = 0; i < house.length; i++) if(i != p1Store && i != p2Store) house[i] = setHole;
     }
     
     public static int p1GetFreeTurn(){
-        for(int i = 0; i <= 6; i++) if(house[i] == (7 - i)) return i;
+        for(int i = 0; i < p1Store; i++) if(house[i] == (p1Store - i)) return i;
         return -1; // return -1 if no possible way to get free turn
     }
     
     public static int p1ChooseNext(){
-        for(int i = 0; i <= 6; i++) if(house[i] != 0) return i;
+        for(int i = 0; i < p1Store; i++) if(house[i] != 0) return i;
         return -1; // return -1 if game whole rows is empty
     }
     
     public static int p2GetFreeTurn(){
-        for(int i = 8; i <= 14; i++) if(house[i] == (15 - i)) return i;
+        for(int i = p1Store+1; i < p2Store; i++) if(house[i] == (p2Store - i)) return i;
         return -1; // return -1 if no possible way to get free turn
     }
     
     public static int p2ChooseNext(){
-        for(int i = 8; i <= 14; i++) if(house[i] != 0) return i;
+        for(int i = p1Store+1; i < p2Store; i++) if(house[i] != 0) return i;
         return -1; // return -1 if game whole rows is empty
     }
     
@@ -121,7 +117,7 @@ public class Generator {
         while(holds > 0){
             n++;
             if(n == p1Store) n++;
-            if(n == 16) n = 0;
+            if(n == p2Store+1) n = 0;
             house[n]++;
             holds--;
             
