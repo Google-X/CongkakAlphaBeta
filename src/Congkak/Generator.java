@@ -14,8 +14,8 @@ INDEX
 
 public class Generator {
     
-    final static int setHole = 7;
-    final static int setMarbleEachHole = 7;
+    final static int setHole = 5;
+    final static int setMarbleEachHole = setHole;
     final static boolean captureMode = true;
     static int[] house = new int[(setHole*2)+2];
     final static int p1Store = house.length/2 - 1;
@@ -26,26 +26,35 @@ public class Generator {
         display();
         
         while(!gameOver()){
-//        P1 starts first
+//          P1 starts first
             System.out.println("Player 1");
-            while(p1GetFreeTurn() != -1) {
-                p1Deposit(p1GetFreeTurn());
+            while(true){
+                int indexToGetFreeTurn = p1GetFreeTurn();
+                if(indexToGetFreeTurn!= -1) {
+                    if(p1Deposit(indexToGetFreeTurn) == false) break;
+                }
+                else {
+                    int randomIndex = p1ChooseNext();
+                    if(p1ChooseNext() == -1) break;
+                    else p1Deposit(randomIndex);
+                }
             }
-            if(p1GetFreeTurn() == -1) p1Deposit(p1ChooseNext());
-            System.out.println();
             
-//        P2 starts next
+//          P2 starts next
             System.out.println("Player 2");
-            while(p2GetFreeTurn() != -1) {
-                p2Deposit(p2GetFreeTurn());
+            while(true){
+                int indexToGetFreeTurn = p2GetFreeTurn();
+                if(indexToGetFreeTurn!= -1) {
+                    if(p2Deposit(indexToGetFreeTurn) == false) break;
+                }
+                else {
+                    int randomIndex = p2ChooseNext();
+                    if(p2ChooseNext() == -1) break;
+                    else p2Deposit(randomIndex);
+                }
             }
-            if(p2GetFreeTurn() == -1) p2Deposit(p2ChooseNext());
-            System.out.println();
-
         }
-        
     }
-    
     public static void newGame(){
         // Assigning marbles for each houses except the storehouses
         for(int i = 0; i < house.length; i++) if(i != p1Store && i != p2Store) house[i] = setHole;
@@ -146,20 +155,23 @@ public class Generator {
         return false;
     }
     
-    
-    
     public static boolean gameOver(){
         int total = 0;
-        for(int i = 0; i < house.length; i++) if(i != 7 && i != 15) total += house[i];
+        for(int i = 0; i < house.length; i++) if(i != p1Store && i != p2Store) total += house[i];
         return total == 0;
     }
     
     public static void display(){
         System.out.print("    ");
-        for(int i = 8; i < 15; i++) System.out.printf("[%2d]", house[i]);
-        System.out.printf("\n[%2d]\t\t\t\t[%2d]\n", house[7], house[15]);
+        for(int i = p1Store+1; i < p2Store; i++) System.out.printf("[%2d]", house[i]);
+        
+        // number of \t = (setHole/2) + 1
+        System.out.printf("\n[%2d]", house[p1Store]);
+        for(int i = 0; i < (setHole/2) + 1; i++) System.out.print("\t");
+        System.out.printf("[%2d]\n", house[p2Store]);
+        
         System.out.print("    ");
-        for(int i = 6; i >= 0; i--) System.out.printf("[%2d]", house[i]);
+        for(int i = p1Store-1; i >= 0; i--) System.out.printf("[%2d]", house[i]);
         System.out.println("\n");
     }
 }
